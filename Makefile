@@ -10,5 +10,5 @@ build-windows:
 	CGO_ENABLED=0 GOOS=windows installsuffix=cgo go build -o ./cmd/agent/agent-windows.exe $(BUILD_INFO) ./cmd/agent/main.go
 
 .PHONY: build-linux
-build-windows:
+build-linux:
 	CGO_ENABLED=0 GOOS=linux installsuffix=cgo go build -o ./cmd/agent/agent-linux $(BUILD_INFO) ./cmd/agent/main.go

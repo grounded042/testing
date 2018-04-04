@@ -27,3 +27,4 @@ deploy:
   skip_cleanup: true
   on:
     repo: grounded042/testing
+    all_branches: true
