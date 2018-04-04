@@ -7,19 +7,23 @@ matrix:
   - go: 1.9
     env:
     - WINDOWS=true
+  - go: 1.9
+    env:
+    - LINUX=true
 env:
   global:
   - COMMIT=${TRAVIS_COMMIT::8}
 script:
-- export BRANCH=$(if [ "$TRAVIS_PULL_REQUEST" == "false" ]; then echo $TRAVIS_BRANCH;
-  else echo $TRAVIS_PULL_REQUEST_BRANCH; fi)
-- if [ "$WINDOWS" == true ]; then bash ./scripts/travis/build-windows.sh ; else echo
-  'skipping windows'; fi
+  - export BRANCH=$(if [ "$TRAVIS_PULL_REQUEST" == "false" ]; then echo $TRAVIS_BRANCH; else echo $TRAVIS_PULL_REQUEST_BRANCH; fi)
+  - if [ "$WINDOWS" == true ]; then make build-windows ; else echo 'skipping windows'; fi
+  - if [ "$LINUX" == true ]; then make build-linux ; else echo 'skipping linux'; fi
 deploy:
   provider: releases
   api_key:
     secure: IyONfvXQ73tRrk951TZdbza7Aa1w8PF//GiThvYGksBdNAfFyOEaKMFiSzApLOppSz9+p9eMQ8z8IV3o89y33bU9TmCykRoYLggZAtU/0gQndBWDBokxR5B9pTsDvc4ETUEnLCn3JmxiJTjLDIUT0Ku755X7D+7E5G0GhZQNi3F0Cptif4opTd5JZ7vKGpdAFYNMcFHyPb3hkoU+5SLT7D+da5uF2TlT/8X/7i4PPmrEmYeDOtzvbjtnmIw2rFdxkHcq/yjOHJ0K8VfHXajYu0klySN9QYj04/SCx4mD07jIZ49QtnKxMaX5kEGRBa2Ng40+47DR415X3MqZ2q0SOZT+MEfaOJjwURU11Vx3vh+5QvWXudcKYJ8y/1404oM37efLnCir9QNKm1GWu26pIut3hXF+R8yN4Dhr4ZSe91rFcoP89ZPN2+JijoQulOcHDB8crUZeKVTHukcrCsKFlHgJD3DQ1WWNjFQXwjF4WXv4nb/xVc3AC6szi1K1Smxbv3PP+8NqYr5N1BxvYMfUTleqEJonjONuP7jzBlw9b4i5ljdduZsOJpohiWMKFsW8I9sxvv/mZ0MQwBGGZbc9q+gAa6eQnxVqwCIyLAG1wMzwNzvz8ubYRMrMpCEH+zKRdIp9pxYThctuI6J8hxn79DSCoNwbhfXFaQ9q6nX8J+k=
-  file: cmd/agent/agent-windows.exe
+  file:
+    - cmd/agent/agent-windows.exe
+    - cmd/agent/agent-linux
   skip_cleanup: true
   on:
     repo: grounded042/testing
