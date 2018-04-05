@@ -18,7 +18,7 @@ function package-linux {
     stage-file ./cmd/agent/agent-linux linux/jaeger-agent
     stage-file ./cmd/collector/collector-linux linux/jaeger-collector
 
-    LINUX_PACKAGE_FILES=$(ls -A $LINUX_STAGING_DIR/*)
+    LINUX_PACKAGE_FILES=$(ls -A $LINUX_STAGING_DIR/*) 2>/dev/null
 
     if [ "$LINUX_PACKAGE_FILES" ]; then
         LINUX_ARCHIVE_NAME="jaeger-"$VERSION"-linux-amd64.tar.gz"
@@ -36,7 +36,7 @@ function package-darwin {
     stage-file ./cmd/agent/agent-darwin darwin/jaeger-agent
     stage-file ./cmd/collector/collector-darwin darwin/jaeger-collector
 
-    DARWIN_PACKAGE_FILES=$(ls -A $DARWIN_STAGING_DIR/*)
+    DARWIN_PACKAGE_FILES=$(ls -A $DARWIN_STAGING_DIR/*) 2>/dev/null
 
     if [ "$DARWIN_PACKAGE_FILES" ]; then
         DARWIN_ARCHIVE_NAME="jaeger-"$VERSION"-darwin-amd64.tar.gz"
@@ -54,7 +54,7 @@ function package-windows {
     stage-file ./cmd/agent/agent-windows windows/jaeger-agent.exe
     stage-file ./cmd/collector/collector-windows windows/jaeger-collector.exe
 
-    WINDOWS_PACKAGE_FILES=$(ls -A $WINDOWS_STAGING_DIR/*)
+    WINDOWS_PACKAGE_FILES=$(ls -A $WINDOWS_STAGING_DIR/*) 2>/dev/null
 
     if [ "$WINDOWS_PACKAGE_FILES" ]; then
         WINDOWS_ARCHIVE_NAME="jaeger-"$VERSION"-windows-amd64.tar.gz"
@@ -77,10 +77,22 @@ mkdir deploy
 mkdir $DEPLOY_STAGING_DIR
 
 # package linux
-package-linux
+if [ "$LINUX" = true ]; then
+    package-linux
+else
+    echo "Skipping the packaging of linux binaries as the \$LINUX was not true."
+fi
 
 # package darwin
-package-darwin
+if [ "$DARWIN" = true ]; then
+    package-darwin
+else
+    echo "Skipping the packaging of darwin binaries as the \$DARWIN=true was not specified."
+fi
 
 # package windows
-package-windows
+if [ "$WINDOWS" = true ]; then
+    package-windows
+else
+    echo "Skipping the packaging of windows binaries as the \$LINUX=true was not specified."
+fi
