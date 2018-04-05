@@ -2,6 +2,7 @@
 
 DEPLOY_STAGING_DIR=./deploy-staging
 VERSION="$(make echo-version | awk 'match($0, /([0-9]*\.[0-9]*\.[0-9]*)$/) { print substr($0, RSTART, RLENGTH) }')"
+echo "Working on version: $VERSION"
 
 # stage-file copies the file $1 with the specified path $2 at /deploy-staging/$2
 # if no file exists it will silently continue
@@ -30,7 +31,7 @@ stage-file ./cmd/collector/collector-linux linux/jaeger-collector
 LINUX_PACKAGE_FILES=$(echo $LINUX_STAGING_DIR/*)
 
 if [ ${#LINUX_PACKAGE_FILES} -gt 0 ]; then
-    LINUX_ARCHIVE_NAME="jaeger-"$VERSION"-darwin-amd64.tar.gz"
+    LINUX_ARCHIVE_NAME="jaeger-"$VERSION"-linux-amd64.tar.gz"
     echo "Packaging the following files into $LINUX_ARCHIVE_NAME:"
     echo $LINUX_PACKAGE_FILES
     tar -czvf ./deploy/$LINUX_ARCHIVE_NAME $LINUX_PACKAGE_FILES

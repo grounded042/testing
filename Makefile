@@ -40,4 +40,4 @@ build-windows: build-agent-windows build-collector-windows
 
 .PHONY: echo-version
 echo-version:
-	echo $(GIT_CLOSEST_TAG)
+	@echo $(GIT_CLOSEST_TAG)

@@ -9,7 +9,11 @@ matrix:
     - WINDOWS=true
   - go: 1.9
     env:
+    - DARWIN=true
+  - go: 1.9
+    env:
     - LINUX=true
+
 env:
   global:
   - COMMIT=${TRAVIS_COMMIT::8}
